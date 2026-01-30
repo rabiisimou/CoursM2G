@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>PROJET FINALE - M2 GER</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #f4f4f4;
+            color: #111;
+            margin: 0;
+            padding: 40px;
+            line-height: 1.6;
+        }
+
+        .paper {
+            background: #fff;
+            max-width: 800px;
+            margin: auto;
+            padding: 50px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            border-top: 5px solid #000;
+        }
+
+        /* HEADER STYLES */
+        header {
+            border-bottom: 2px solid #000;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 22px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        .meta {
+            text-align: right;
+            font-size: 13px;
+        }
+
+        /* SECTION STYLES */
+        h2 {
+            font-size: 16px;
+            background: #eee;
+            padding: 8px;
+            text-transform: uppercase;
+            margin-top: 30px;
+            border-left: 5px solid #000;
+        }
+
+        h3 {
+            font-size: 15px;
+            margin-top: 20px;
+            text-decoration: underline;
+        }
+
+        ul { margin-bottom: 20px; }
+        li { margin-bottom: 8px; font-size: 15px; }
+
+        /* TABLE STYLES */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin: 20px 0;
+        }
+        th, td { border: 1px solid #000; padding: 10px; text-align: left; }
+        th { background: #e0e0e0; }
+
+        /* WARNING BOX */
+        .warning {
+            border: 2px solid #000;
+            padding: 15px;
+            font-weight: bold;
+            text-align: center;
+            margin: 30px 0;
+            background: #fff0f0;
+        }
+
+        /* TIMER */
+        #timer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            background: #b00;
+            color: white;
+            padding: 10px 20px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            z-index: 100;
+        }
+        
+        .footer {
+            margin-top: 60px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="timer">TEMPS RESTANT : 02:00:00</div>
+
+    <div class="paper">
+        <header>
+            <div>
+                <h1>Projet Final</h1>
+                <span style="font-size: 14px; font-style: italic;">Développement d'outils de géotraitement</span>
+            </div>
+            <div class="meta">
+                <strong>Durée :</strong> 2h00<br>
+                <strong>Session :</strong> 2025/2026
+            </div>
+        </header>
+
+        <div class="warning">
+            <br>
+            Vous devez construire l'intégralité du script (Imports, Fonctions, Logique) à partir d'un nouveau Notebook.
+        </div>
+
+        <h2>I. Contexte & Objectifs</h2>
+        <p>
+            Vous agissez en tant qu'analyste géomaticien. Votre objectif est de développer une méthodologie reproductible 
+            permettant de <strong>quantifier des surfaces environnementales spécifiques</strong> sur deux territoires urbains distincts 
+            à partir d'imagerie satellite récente.
+        </p>
+        <p>Le livrable attendu est un script Python capable d'automatiser la chaîne de traitement complète : de l'acquisition des données brutes à l'analyse statistique finale.</p>
+
+        <h2>II. Paramètres d'Étude (Par Groupe)</h2>
+        <p>Référez-vous au tableau ci-dessous pour identifier les paramètres techniques qui vous sont imposés.</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Groupe</th>
+                    <th>Villes Cibles</th>
+                    <th>Indice Spectral</th>
+                    <th>Bandes Sentinel-2</th>
+                    <th>Seuil d'Analyse</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>G1</strong></td>
+                    <td>Tours vs Le Mans</td>
+                    <td>NDVI (Densité Végétale)</td>
+                    <td>B8 (NIR), B4 (Red)</td>
+                    <td>> 0.60</td>
+                </tr>
+                <tr>
+                    <td><strong>G2</strong></td>
+                    <td>St-Nazaire vs Lorient</td>
+                    <td>NDBI (Bâti/Imperméable)</td>
+                    <td>B11 (SWIR), B8 (NIR)</td>
+                    <td>> 0.10</td>
+                </tr>
+                <tr>
+                    <td><strong>G3</strong></td>
+                    <td>Vannes vs St-Malo</td>
+                    <td>MNDWI (Eau Libre)</td>
+                    <td>B3 (Green), B11 (SWIR)</td>
+                    <td>> 0.00</td>
+                </tr>
+                <tr>
+                    <td><strong>G4</strong></td>
+                    <td>Niort vs La Roche/Yon</td>
+                    <td>NDMI (Stress Hydrique)</td>
+                    <td>B8 (NIR), B11 (SWIR)</td>
+                    <td>> 0.20</td>
+                </tr>
+                <tr>
+                    <td><strong>G5</strong></td>
+                    <td>Laval vs Alençon</td>
+                    <td>GNDVI (Vigueur Chlorophylle)</td>
+                    <td>B8 (NIR), B3 (Green)</td>
+                    <td>> 0.50</td>
+                </tr>
+            </tbody>
+        </table>
+        <p><strong>Rappel Mathématique :</strong> La normalisation d'indice suit toujours la logique <code>(A - B) / (A + B)</code>.</p>
+
+        <h2>III. Cahier des Charges Technique</h2>
+        <p>Votre script Python doit impérativement respecter les étapes fonctionnelles suivantes :</p>
+
+        <h3>1. Diagramme de Flux (Flowchart)</h3>
+        <p>
+            Avant d'écrire la moindre ligne de code, dessinez le diagramme logique de votre traitement (Entrées > Processus > Sorties).
+            
+
+[Image of flowchart diagram symbols]
+
+            Ce schéma devra être présenté lors de la soutenance.
+        </p>
+
+        <h3>2. Module d'Acquisition Géométrique</h3>
+        <ul>
+            <li>Le script doit interroger l'API <code>geo.api.gouv.fr</code> pour récupérer dynamiquement le contour (GeoJSON) des communes ciblées.</li>
+            <li>Aucun fichier Shapefile ne doit être stocké localement au préalable.</li>
+        </ul>
+
+        <h3>3. Module de Traitement Satellite</h3>
+        <ul>
+            <li>Connexion à l'API Google Earth Engine.</li>
+            <li>Filtrage de la collection <code>Sentinel-2 SR Harmonized</code> sur la période Estivale 2025.</li>
+            <li>Application d'un filtre nuageux strict (< 10%).</li>
+            <li>Calcul de l'indice spectral assigné à votre groupe.</li>
+            <li>Export de l'image résultante au format GeoTIFF (résolution 20m).</li>
+        </ul>
+
+        <h3>4. Module d'Analyse Statistique (NumPy)</h3>
+        <ul>
+            <li>Ouverture du fichier Raster généré.</li>
+            <li>Lecture des métadonnées pour récupérer la résolution spatiale du pixel.</li>
+            <li>Utilisation de la bibliothèque <strong>NumPy</strong> pour :
+                <ul>
+                    <li>Isoler les pixels valides.</li>
+                    <li>Compter les pixels répondant au critère du seuil.</li>
+                    <li>Convertir ce nombre de pixels en une <strong>surface réelle en Hectares</strong>.</li>
+                </ul>
+            </li>
+            <li>Affichage clair des résultats dans la console.</li>
+        </ul>
+
+        <h2>IV. Livrables de Fin de Séance</h2>
+        <ol>
+            <li>Le script Python complet (<code>.py</code> ou <code>.ipynb</code>).</li>
+            <li>Le schéma méthodologique (Flowchart).</li>
+            <li>Une présentation orale de 10 minutes exposant la comparaison chiffrée entre les deux villes.</li>
+        </ol>
+
+        <div class="footer">
+            Master 2 GER | Développement d'outils de géotraitement 
+        </div>
+    </div>
+
+    <script>
+        // Compte à rebours 2H
+        let time = 7200;
+        const el = document.getElementById('timer');
+        setInterval(() => {
+            if(time <= 0) {
+                el.innerText = "FIN DE L'ÉPREUVE";
+                el.style.background = "#000";
+                return;
+            }
+            let h = Math.floor(time / 3600);
+            let m = Math.floor((time % 3600) / 60);
+            let s = time % 60;
+            el.innerText = "TEMPS RESTANT : " + 
+                (h < 10 ? "0"+h : h) + ":" + 
+                (m < 10 ? "0"+m : m) + ":" + 
+                (s < 10 ? "0"+s : s);
+            time--;
+        }, 1000);
+    </script>
+</body>
+</html>
